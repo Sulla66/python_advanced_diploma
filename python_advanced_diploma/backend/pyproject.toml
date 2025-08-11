@@ -1,0 +1,30 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "My backend application"
+authors = [{name = "Your Name", email = "your@email.com"}]
+requires-python = ">=3.10"
+
+packages = [
+    {include = "app", from = "."},
+    {include = "backend", from = "."}
+]
+
+dependencies = [
+    "flask==3.1.1",
+    "psycopg2-binary==2.9.10"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.4.1",
+    "black==25.1.0",
+    "flake8==7.3.0"
+]
+
+[project.scripts]
+start = "app.__init__:create_app"
+
+[build-system]
+requires = ["poetry-core>=1.7.0"]
+build-backend = "poetry.core.masonry.api"

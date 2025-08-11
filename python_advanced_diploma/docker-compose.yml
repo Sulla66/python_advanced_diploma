@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend          # Использует backend/Dockerfile
+    ports:
+      - "5000:5000"          # Порт Flask/FastAPI
+    environment:
+      - FLASK_APP=app.py      # Для Flask (уточните для вашего фреймворка)
+    volumes:
+      - ./backend:/app       # Для разработки (hot-reload)
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/ping"]
+      interval: 10s
+
+  frontend:
+    build: ./frontend         # Использует frontend/Dockerfile
+    ports:
+      - "80:80"              # Порт Nginx
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  db:                        # Пример с PostgreSQL
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
